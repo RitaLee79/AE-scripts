@@ -1,5 +1,5 @@
-/*
-GeneraSubtitulosAR - v0.1
+﻿/*
+GeneraSubtitulosAR - v0.2
 
 
 
@@ -23,6 +23,8 @@ var twoLineMaxChars = 90;
 var plantillaXMLPath = "~/Desktop/plantilla.xml";
 var finalXMLPath = "~/Desktop/mySubs.xml";
 
+//TEST VARIABLES
+var restToSoft = 0.3
 
 // ABRIR ARCHIVO
 var fileToRead = File.openDialog("Elige un archivo de texto");
@@ -55,10 +57,18 @@ if (readOK) {
 		} else {
 			//MEJORAR si el decimal cerca de 0 multiplicar twoLineMaxChars por un indice de correccion
 			var numOfCuts = Math.ceil(lineaArray[i].length / twoLineMaxChars);
+			var corrFactor = 1;
+			var pastCutRest = (lineaArray[i].length % twoLineMaxChars) / twoLineMaxChars;
+			if (pastCutRest < restToSoft){
+				corrFactor = 1 - (restToSoft-pastCutRest);
+			}
+             var corrMaxChars = twoLineMaxChars * corrFactor;
+			alert("pastCutRest = " + pastCutRest + " / corrFactor = " + corrFactor + " / corrMaxChars = " + corrMaxChars);
 			var startIndex = 0;
+             var dirtyFix = lineaArray[i] + " ";
+
 			for (var j=1; j <= numOfCuts; j++) {
-				var dirtyFix = lineaArray[i] + " ";
-				var cutIndex = dirtyFix.lastIndexOf (" ", (twoLineMaxChars*j)) ;
+				var cutIndex = dirtyFix.lastIndexOf (" ", corrMaxChars* j);
 				pastillaArray[pastillaArray.length] = lineaArray[i].substring (startIndex, cutIndex);
 				startIndex = cutIndex+1;
 			}
