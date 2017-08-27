@@ -1,0 +1,5 @@
+function deleteAllKeyframes(property){
+    while(property.numKeys > 0) {
+            property.removeKey(1);
+    }
+};
